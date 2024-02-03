@@ -4,6 +4,7 @@ module.exports = {
     extend: {
       fontFamily: {
         'inconsolata': ['Inconsolata'],
+        'robo': ["Roboto Slab"]
       }
     },
   },
