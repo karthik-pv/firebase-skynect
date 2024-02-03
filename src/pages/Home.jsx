@@ -4,7 +4,7 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 
 const Home = () => {
     return (
-        <div className='bg-black opacity-100 text-white h-screen flex' style={patternCSS}>
+        <div className='bg-black opacity-100 text-white h-screen flex pattern-hive-white/15'>
             <div className='w-1/2 flex flex-col justify-center pl-60 gap-10'>
                 <div className='flex flex-col'>
                     <span className='text-6xl tracking-widest font-inconsolata capitalize'>SKYNECT</span>
@@ -60,12 +60,6 @@ const Home = () => {
             </div>
         </div>
     )
-}
-
-const patternCSS = {
-    backgroundImage: "radial-gradient(#ffffff 0.5px, transparent 0.5px), radial-gradient(#ffffff 0.5px, #000000 0.5px)",
-    backgroundSize: "26px 26px",
-    backgroundPosition: "0 0,13px 13px"
 }
 
 export default Home
