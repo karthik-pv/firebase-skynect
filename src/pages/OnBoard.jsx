@@ -65,7 +65,7 @@ const OnBoard = () => {
                                     <label>Yes</label>
                                 </div>
                                 <div className='flex items-center'>
-                                    <input className='cursor-pointer' type='radio' name='startup' value='false' onChange={() => setIsStartup(true)} />
+                                    <input className='cursor-pointer' type='radio' name='startup' value='false' onChange={() => setIsStartup(false)} />
                                     <label>No</label>
                                 </div>
                             </div>
