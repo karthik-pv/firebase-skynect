@@ -1,12 +1,13 @@
 import React from 'react'
 import Skynect from '../components/Skynect'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
+import { motion } from 'framer-motion'
 
 const Home = () => {
     return (
         <div className='bg-black opacity-100 text-white h-screen flex items-center pattern-hive-white/15 px-20'>
             <Skynect />
-            <div className='flex flex-col justify-center w-3/5'>
+            <motion.div animate={{ x: -100 }} className='flex flex-col justify-center w-3/5'>
                 <div className='bg-white text-black m-20 p-5'>
                     <span className='text-2xl tracking-widest font-inconsolata font-extrabold'>Login</span>
                     <div className='font-inconsolata flex flex-col my-5'>
@@ -29,7 +30,7 @@ const Home = () => {
                         </button>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </div>
     )
 }
