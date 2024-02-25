@@ -2,21 +2,83 @@ import React, { useState } from 'react'
 import Skynect from '../components/Skynect'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { motion } from 'framer-motion'
+import { db , auth } from '../firebase'
+import { useNavigate } from 'react-router-dom'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { collection , addDoc } from 'firebase/firestore'
 
 const OnBoard = () => {
 
+    const navigate = useNavigate();
+
     const [stage, setStage] = useState(0)
     const [isStartup, setIsStartup] = useState(false)
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [phoneCode, setPhoneCode] = useState("");
+    const [phone, setPhone] = useState("");
+    const [startupName , setStartupName ] = useState("");
+    const [startupStage, setStartupStage ] = useState("");
+    const [startupOneLine, setStartupOneLine ] = useState("");
+    const [startupBrief, setStartupBrief] = useState("");
+    const [others, setOthers] = useState("");
+    const [othersOneLine, setOthersOneLine] = useState("");
+    const [othersBrief, setOthersBrief] = useState("");
+    const [othersFirmName, setOthersFirmName] = useState("");
+    const [othersFirmBrief, setOthersFirmBrief] = useState("");
+
+    const onDone = async() => {
+        
+        try {
+            await Promise.all([handleDetails,handleDetailsStartup]);
+            const user = await createUserWithEmailAndPassword(auth , email , password);
+            console.log(user);
+            const usersCollectionRef = collection(db, 'skynect');
+
+            if(isStartup){
+                await addDoc(usersCollectionRef, {
+                    name,
+                    email,
+                    phoneCode,
+                    phone,
+                    password,
+                    startupName,
+                    startupOneLine,
+                    startupBrief,
+                    startupStage 
+                })
+            }
+            else{
+                await addDoc(usersCollectionRef, {
+                    name,
+                    email,
+                    phoneCode,
+                    phone,
+                    password,
+                    others,
+                    othersOneLine,
+                    othersBrief,
+                    othersFirmName,
+                    othersFirmBrief
+                })       
+            }
+            navigate('/home');
+        }
+        catch(error) {
+            console.log(error);
+        }
+    }
 
     const handleRegister = (e) => {
+
         e.preventDefault()
-
-        console.log(e.target.name.value)
-        console.log(e.target.email.value)
-        console.log(e.target.phoneCode.value)
-        console.log(e.target.phone.value)
-        console.log(e.target.password.value)
-
+        
+        setName(e.target.name.value);
+        setEmail(e.target.email.value);
+        setPassword(e.target.password.value);
+        setPhoneCode(e.target.phoneCode.value);
+        setPhone(e.target.phone.value);
         setStage(1)
     }
 
@@ -31,26 +93,30 @@ const OnBoard = () => {
         setStage(2)
     }
 
-    const handleDetailsStartup = (e) => {
+    const handleDetailsStartup = async(e) => {
         e.preventDefault()
 
-        console.log(e.target.startupName.value)
-        console.log(e.target.startupOneLine.value)
-        console.log(e.target.startupBrief.value)
-        console.log(e.target.startupStage.value)
+        setStartupName(e.target.startupName.value);
+        setStartupOneLine(e.target.startupOneLine.value);
+        setStartupStage(e.target.startupStage.value);
+        setStartupBrief(e.target.startupBrief.value);
+
+        setStage(3)
 
     }
 
-    const handleDetails = (e) => {
+    const handleDetails = async(e) => {
         e.preventDefault()
 
-        console.log(e.target.others.value)
-        console.log(e.target.othersOneLine.value)
-        console.log(e.target.othersBrief.value)
-        console.log(e.target.othersFirmName.value)
-        console.log(e.target.othersFirmBrief.value)
+        setOthers(e.target.others.value);
+        setOthersOneLine(e.target.othersOneLine.value);
+        setOthersBrief(e.target.othersBrief.value);
+        setOthersFirmName(e.target.othersFirmName.value);
+        setOthersFirmBrief(e.target.othersFirmBrief.value);
+    
+        setStage(3)
 
-    }
+    } 
 
     return (
         <div className='bg-black opacity-100 text-white h-screen flex items-center justify-center pattern-hive-white/15 px-20'>
@@ -217,6 +283,17 @@ const OnBoard = () => {
                             </motion.div>
                     }
                 </>
+            }
+            {
+                stage === 3 &&
+                    <>
+                        <motion.div animate={{ x: -20 }} className='bg-white text-black p-5 w-full'>
+                            <button className='font-inconsolata flex items-center bg-black text-white py-1 px-8 hover:underline' onClick={onDone}>
+                                Let's Fly Now
+                                <MdOutlineKeyboardArrowRight size={25} />
+                            </button>
+                        </motion.div>
+                    </>
             }
         </div>
     )
