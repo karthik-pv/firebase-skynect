@@ -37,9 +37,16 @@ const Home = () => {
       where('startupName', '<', prefix + '\uf8ff')
     )
 
+    const roleQuery = query(
+      collectionRef,
+      where('role', '>=', prefix),
+      where('role', '<', prefix + '\uf8ff')
+    )
+
     try {
       const nameQuerySnapshot = await getDocs(nameQuery);
       const startUpQuerySnapshot = await getDocs(startUpQuery);
+      const roleQuerySnapshot = await getDocs(roleQuery);
 
       const nameData = nameQuerySnapshot.docs.map(doc => ({
         ...doc.data()
@@ -49,7 +56,11 @@ const Home = () => {
         ...doc.data()
       }));
 
-      const filteredData = [...nameData, ...startupData]; 
+      const roleData = roleQuerySnapshot.docs.map(doc => ({
+        ...doc.data()
+      }));
+
+      const filteredData = [...nameData, ...startupData, ...roleData]; 
 
       const uniqueIdentifiers = new Set();
 

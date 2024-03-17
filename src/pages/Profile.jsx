@@ -1,9 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { collection , getDocs , query , where , doc , updateDoc , arrayUnion, arrayRemove } from 'firebase/firestore';
+import { collection , getDocs , query , where , doc , updateDoc , arrayUnion, arrayRemove , getDoc } from 'firebase/firestore';
 import { db , auth } from '../firebase';
 import { useLocation } from 'react-router-dom';
 import Header from "../components/Header";
+import FollowUsersList from "../components/FollowUsersList";
 import pfpimg from '../assets/empty_pfp.jpg'
 
 const Profile = () => {
@@ -12,6 +13,10 @@ const Profile = () => {
     const queryParams = new URLSearchParams(location.search)
     const  uid = queryParams.get('uid')
     const [user , setUser] = useState({})
+    const [followerUserList , setFollowerUserList] = useState([])
+    const [followingUserList , setFollowingUserList] = useState([])
+    const [userList , setUserList] = useState([])
+    const [toggleUserList , setToggleUserList] = useState(false)
 
     const getDataFromDb = async () => {
         try {
@@ -30,38 +35,71 @@ const Profile = () => {
           }
     }
 
-    const onFollow = async() => {
+    const onFollow = async () => {
         try {
-            const docRef = doc(db,'skynect',user.id);
-            await updateDoc(docRef, {
-                followers: arrayUnion(auth.currentUser.uid)
-            })
-            const myDocRef = doc(db,'skynect',auth.currentUser.uid)
+            setUser(prevUser => ({
+                ...prevUser,
+                followers: [...prevUser.followers, auth.currentUser.uid]
+            }));
+    
+            const myDocRef = doc(db, 'skynect', auth.currentUser.uid);
             await updateDoc(myDocRef, {
                 following: arrayUnion(user.id)
-            })
-        }
-        catch(error){
-            console.log(error)
+            });
+        } catch (error) {
+            console.log(error);
         }
     }
-
-    const onUnfollow = async() => {
-        try{
-            const docRef = doc(db,'skynect',user.id);
-            await updateDoc(docRef, {
-                followers: arrayRemove(auth.currentUser.uid)
-            })
-            const myDocRef = doc(db,'skynect',auth.currentUser.uid)
+    
+    const onUnfollow = async () => {
+        try {
+            setUser(prevUser => ({
+                ...prevUser,
+                followers: prevUser.followers.filter(id => id !== auth.currentUser.uid)
+            }));
+    
+            const myDocRef = doc(db, 'skynect', auth.currentUser.uid);
             await updateDoc(myDocRef, {
                 following: arrayRemove(user.id)
-            })
-        }
-        catch(error){
-            console.log(error)
+            });
+        } catch (error) {
+            console.log(error);
         }
     }
 
+    const onFollowersClick = async () => { 
+        if (!followerUserList.length) {
+            const users = await fetchUsers(user.followers);
+            setFollowerUserList(users);
+        }
+        setUserList(followerUserList);
+        console.log(userList)
+        setToggleUserList(!toggleUserList);
+    };
+
+    const onFollowingClick = async () => { 
+        if (!followingUserList.length) {
+            const users = await fetchUsers(user.following);
+            setFollowingUserList(users);
+        }
+        setUserList(followingUserList);
+        setToggleUserList(!toggleUserList);
+    };
+
+    const fetchUsers = async (userIds) => {
+        const users = [];
+        for (const userId of userIds) {
+            const userDoc = await getUserDoc(userId);
+            users.push(userDoc);
+        }
+        return users;
+    };
+
+    const getUserDoc = async (userId) => {
+        const docRef = doc(collection(db, 'skynect'), userId);
+        const docSnap = await getDoc(docRef);
+        return docSnap.data();
+    };
     useEffect(()=>{
         getDataFromDb()
     },[])
@@ -86,9 +124,17 @@ const Profile = () => {
             {auth.currentUser && auth.currentUser.uid === user.id &&
             <>
                 <div className="p-10">
-                    <button className="bg-green-500 p-5 rounded-full mr-10 text-2xl">Following - {user.following.length}</button>
-                    <button className="bg-green-500 p-5 rounded-full text-2xl">Followers - {user.followers.length}</button>
+                    <button className="bg-green-500 p-5 rounded-full mr-10 text-2xl" onClick={onFollowingClick}>Following - {user.following.length}</button>
+                    <button className="bg-green-500 p-5 rounded-full text-2xl" onClick={onFollowersClick}>Followers - {user.followers.length}</button>
                 </div>
+                {
+                    toggleUserList && 
+                    <>
+                        <FollowUsersList
+                        userList = {userList}
+                        />
+                    </>
+                }   
             </>}
             {auth.currentUser && auth.currentUser.uid !== user.id &&
             <>

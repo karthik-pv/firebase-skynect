@@ -7,8 +7,12 @@ const Header = () => {
 
     const navigate = useNavigate();
 
+    const goToHomePage = () => {
+        navigate('/home')
+    }
+
     const GoToProfile = () =>{
-        navigate(`/profile?uid=${auth.currentUser.uid}`)
+        window.location.href=`/profile?uid=${auth.currentUser.uid}`
     }
 
     const onSignout = () => {
@@ -31,6 +35,9 @@ const Header = () => {
                     <tr>
                         <td>
                             <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={goToGrants}>Grants</button>
+                        </td>
+                        <td>
+                            <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={goToHomePage}>Skynectors</button>
                         </td>
                         <td>
                             <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={GoToProfile}>My Profile</button>

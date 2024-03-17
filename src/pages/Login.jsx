@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { auth } from '../firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import bgimg from '../assets/Clouds.jpg'
 
 const Home = () => {
 
