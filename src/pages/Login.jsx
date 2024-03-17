@@ -26,6 +26,7 @@ const Home = () => {
             navigate('/home');
         } 
         catch (error) {
+            alert(error.message)
             setError(error.message);
         }
     };

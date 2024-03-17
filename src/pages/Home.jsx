@@ -1,10 +1,13 @@
 import React from "react";
 import { useState , useEffect } from "react";
-import { collection , getDocs ,query , where , or} from 'firebase/firestore';
-import { db } from '../firebase';
+import { collection , getDocs ,query , where } from 'firebase/firestore';
+import { db , auth } from '../firebase';
+import Header from '../components/Header'
+import StartupDetailTile from "../components/StartupDetailTile";
 
 const Home = () => {
 
+  const currentUser = auth.currentUser;
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchPrefix , setSearchPrefix] = useState('');
@@ -67,28 +70,34 @@ const Home = () => {
     }
   }
   
-    return (
-      <div>
-        <h2>Firestore Data:</h2>
-        <input
-          type="text"
-          value={searchPrefix}
-          onChange={(e) => setPrefixandSearch(e.target.value)}
-          placeholder="Search Prefix"
-        />
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <ul>
+  return (
+    <div className="bg-black opacity-100 text-white min-h-screen flex flex-col align-top items-center pattern-hive-white/15 px-20">
+      <Header/>
+      <input
+        type="text"
+        value={searchPrefix}
+        onChange={(e) => setPrefixandSearch(e.target.value)}
+        placeholder="Search Skynect Users"
+        className="text-black mb-10 w-1/2 py-2 px-4 rounded-lg border border-gray-300 text-center"
+      />
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="w-full flex justify-center">
+          <ul className="w-full">
             {documents.map((doc) => (
-              <li key={doc.id}>
-                <pre>{JSON.stringify(doc, null, 2)}</pre>
+             currentUser.uid !== doc.id &&
+              <li className="flex justify-center" key={doc.id}>
+                  <StartupDetailTile
+                      userObj={doc}
+                  />
               </li>
             ))}
           </ul>
-        )}
-      </div>
-    );
-  };
+        </div>
+      )}
+    </div>
+  );
+}
   
   export default Home;

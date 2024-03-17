@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { db, auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
+import { doc ,setDoc} from 'firebase/firestore';
 
 const OnBoard = () => {
 
@@ -13,57 +13,94 @@ const OnBoard = () => {
 
   const [stage,setStage] = useState(0);
 
-  const [formDetails, setFormDetails] = useState({
-    isStartup: false,
+//   const [formDetails, setFormDetails] = useState({
+//     isStartup: false,
+//     name: '',
+//     email: '',
+//     password: '',
+//     phoneCode: '',
+//     phone: '',
+//     startupName: '',
+//     startupStage: '',
+//     startupOneLine: '',
+//     startupBrief: '',
+//     others: '',
+//     othersOneLine: '',
+//     othersBrief: '',
+//     othersFirmName: '',
+//     othersFirmBrief: '',
+//   });
+
+
+const [formDetails, setFormDetails] = useState({
     name: '',
     email: '',
     password: '',
     phoneCode: '',
     phone: '',
     startupName: '',
-    startupStage: '',
     startupOneLine: '',
     startupBrief: '',
-    others: '',
-    othersOneLine: '',
-    othersBrief: '',
-    othersFirmName: '',
-    othersFirmBrief: '',
+    role:'',
+    selfOneLine:'',
+    selfBrief:''
   });
 
   const onDone = async () => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, formDetails.email, formDetails.password);
-      console.log(user);
-      const usersCollectionRef = collection(db, 'skynect');
-
-      if (formDetails.isStartup) {
-        await addDoc(usersCollectionRef, {
+        const userCred = await createUserWithEmailAndPassword(auth, formDetails.email, formDetails.password);
+        const uid = userCred.user.uid; // Get the UID from the User object inside the UserCredential
+        
+        // Get reference to the user document using the UID
+        const usersCollectionRef = doc(db, 'skynect', uid);
+    
+        // Set the data for the user document in Firestore
+        await setDoc(usersCollectionRef, {
           name: formDetails.name,
           email: formDetails.email,
           phoneCode: formDetails.phoneCode,
           phone: formDetails.phone,
-          password: formDetails.password,
           startupName: formDetails.startupName,
           startupOneLine: formDetails.startupOneLine,
           startupBrief: formDetails.startupBrief,
-          startupStage: formDetails.startupStage,
+          role: formDetails.role,
+          selfOneLine: formDetails.selfOneLine,
+          selfBrief: formDetails.selfBrief,
+          id : uid,
+          following : [],
+          followers : []
         });
-      } else {
-        await addDoc(usersCollectionRef, {
-          name: formDetails.name,
-          email: formDetails.email,
-          phoneCode: formDetails.phoneCode,
-          phone: formDetails.phone,
-          password: formDetails.password,
-          others: formDetails.others,
-          othersOneLine: formDetails.othersOneLine,
-          othersBrief: formDetails.othersBrief,
-          othersFirmName: formDetails.othersFirmName,
-          othersFirmBrief: formDetails.othersFirmBrief,
-        });
-      }
+
+    //   if (formDetails.isStartup) {
+    //     await addDoc(usersCollectionRef, {
+    //       name: formDetails.name,
+    //       email: formDetails.email,
+    //       phoneCode: formDetails.phoneCode,
+    //       phone: formDetails.phone,
+    //       password: formDetails.password,
+    //       startupName: formDetails.startupName,
+    //       startupOneLine: formDetails.startupOneLine,
+    //       startupBrief: formDetails.startupBrief,
+    //       startupStage: formDetails.startupStage,
+    //     });
+    //   } else {
+    //     await addDoc(usersCollectionRef, {
+    //       name: formDetails.name,
+    //       email: formDetails.email,
+    //       phoneCode: formDetails.phoneCode,
+    //       phone: formDetails.phone,
+    //       password: formDetails.password,
+    //       others: formDetails.others,
+    //       othersOneLine: formDetails.othersOneLine,
+    //       othersBrief: formDetails.othersBrief,
+    //       othersFirmName: formDetails.othersFirmName,
+    //       othersFirmBrief: formDetails.othersFirmBrief,
+    //     });
+    //   }
+
+
       navigate('/home');
+
     } catch (error) {
       console.log(error);
     }
@@ -82,39 +119,62 @@ const OnBoard = () => {
     setStage(1);
   };
 
-  const handleIsStartup = (e) => {
-    e.preventDefault();
-    setFormDetails((prevDetails) => ({
-      ...prevDetails,
-      isStartup: e.target[0].checked
-    }));
-    setStage(2);
-  };
+//   const handleIsStartup = (e) => {
+//     e.preventDefault();
+//     setFormDetails((prevDetails) => ({
+//       ...prevDetails,
+//       isStartup: e.target[0].checked
+//     }));
+//     setStage(2);
+//   };
 
-  const handleDetailsStartup = async (e) => {
-    e.preventDefault();
-    setFormDetails((prevDetails) => ({
-      ...prevDetails,
-      startupName: e.target.startupName.value,
-      startupOneLine: e.target.startupOneLine.value,
-      startupStage: e.target.startupStage.value,
-      startupBrief: e.target.startupBrief.value
-    }));
-    setStage(3);
-  };
+//   const handleDetailsStartup = (e) => {
+//     e.preventDefault();
+//     setFormDetails((prevDetails) => ({
+//       ...prevDetails,
+//       startupName: e.target.startupName.value,
+//       startupOneLine: e.target.startupOneLine.value,
+//       startupStage: e.target.startupStage.value,
+//       startupBrief: e.target.startupBrief.value
+//     }));
+//     setStage(2);
+//   };
 
-    const handleDetails = async (e) => {
+    // const handleOtherDetails = (e) => {
+    //     e.preventDefault();
+    //     setFormDetails((prevDetails) => ({
+    //         ...prevDetails,
+    //         others: e.target.others.value,
+    //         othersOneLine: e.target.othersOneLine.value,
+    //         othersBrief: e.target.othersBrief.value,
+    //         othersFirmName: e.target.othersFirmName.value,
+    //         othersFirmBrief: e.target.othersFirmBrief.value
+    //     }));
+    //     setStage(3);
+    // };
+
+    const handleStartupDetails = (e) => {
+        e.preventDefault();
+        setFormDetails((prevDetails) => ({
+          ...prevDetails,
+          startupName: e.target.startupName.value,
+          startupOneLine: e.target.startupOneLine.value,
+          startupBrief: e.target.startupBrief.value
+        }));
+        setStage(2);
+    }
+
+    const handleSelfDetails = (e) => {
         e.preventDefault();
         setFormDetails((prevDetails) => ({
             ...prevDetails,
-            others: e.target.others.value,
-            othersOneLine: e.target.othersOneLine.value,
-            othersBrief: e.target.othersBrief.value,
-            othersFirmName: e.target.othersFirmName.value,
-            othersFirmBrief: e.target.othersFirmBrief.value
+            role: e.target.role.value,
+            selfOneLine: e.target.selfOneLine.value,
+            selfBrief: e.target.selfBrief.value
         }));
         setStage(3);
-    };
+    }
+    
 
     return (
         <div className='bg-black opacity-100 text-white h-screen flex items-center justify-center pattern-hive-white/15 px-20'>
@@ -159,35 +219,35 @@ const OnBoard = () => {
                 </>
             }
             {
-                stage === 1 &&
-                <motion.div animate={{ x: -20 }} className='bg-white text-black p-5 w-1/2'>
-                    <form className='font-inconsolata flex flex-col gap-5' onSubmit={handleIsStartup}>
-                        <div>
-                            <label className='font-bold'>Are you a Startup? (do you manage your startup)</label>
-                            <div className='flex gap-5'>
-                                <div className='flex items-center'>
-                                    <input className='cursor-pointer' type='radio' name='startup' value='true' required />
-                                    <label>Yes</label>
-                                </div>
-                                <div className='flex items-center'>
-                                    <input className='cursor-pointer' type='radio' name='startup' value='false' required />
-                                    <label>No</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <button className='font-inconsolata flex items-center bg-black text-white py-1 px-8 hover:underline'>
-                                Next
-                                <MdOutlineKeyboardArrowRight size={25} />
-                            </button>
-                        </div>
-                    </form>
-                </motion.div>
+                // stage === 1 &&
+                // <motion.div animate={{ x: -20 }} className='bg-white text-black p-5 w-1/2'>
+                //     <form className='font-inconsolata flex flex-col gap-5' onSubmit={handleIsStartup}>
+                //         <div>
+                //             <label className='font-bold'>Are you a Startup? (do you manage your startup)</label>
+                //             <div className='flex gap-5'>
+                //                 <div className='flex items-center'>
+                //                     <input className='cursor-pointer' type='radio' name='startup' value='true' required />
+                //                     <label>Yes</label>
+                //                 </div>
+                //                 <div className='flex items-center'>
+                //                     <input className='cursor-pointer' type='radio' name='startup' value='false' required />
+                //                     <label>No</label>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //         <div>
+                //             <button className='font-inconsolata flex items-center bg-black text-white py-1 px-8 hover:underline'>
+                //                 Next
+                //                 <MdOutlineKeyboardArrowRight size={25} />
+                //             </button>
+                //         </div>
+                //     </form>
+                // </motion.div>
             }
             {
-                stage === 2 &&
-                <>
-                    {
+                // stage === 2 &&
+                //<>
+                    /*{ {
                         formDetails.isStartup ? <motion.div animate={{ x: -20 }} className='bg-white text-black p-5 w-full'>
                             <form className='flex flex-col gap-5' onSubmit={handleDetailsStartup}>
                                 <div className='font-inconsolata flex flex-col'>
@@ -233,7 +293,7 @@ const OnBoard = () => {
                         </motion.div>
                             :
                             <motion.div animate={{ x: -20 }} className='bg-white text-black p-5 w-full'>
-                                <form className='flex flex-col gap-5' onSubmit={handleDetails}>
+                                <form className='flex flex-col gap-5' onSubmit={handleOtherDetails}>
                                     <div className='font-inconsolata flex flex-col'>
                                         <label className='font-bold'>What are you?</label>
                                         <div className='flex gap-5'>
@@ -279,8 +339,60 @@ const OnBoard = () => {
                                     </div>
                                 </form>
                             </motion.div>
-                    }
+                    } }*/
+                //</>
+                stage===1 && 
+                <>
+                    <motion.div animate={{ x: -20 }} className='bg-white text-black p-5 w-full'>
+                        <form className='flex flex-col gap-5' onSubmit={handleStartupDetails}>
+                            <div className='font-inconsolata flex flex-col'>
+                                <label htmlFor='startupName' className='font-bold'>Name of the Startup</label>
+                                <input type='text' name='startupName' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
+                            </div>
+                            <div className='font-inconsolata flex flex-col'>
+                                <label htmlFor='startupOneLine' className='font-bold'>One line about the Startup</label>
+                                <input type='text' name='startupOneLine' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
+                            </div>
+                            <div className='font-inconsolata flex flex-col'>
+                                <label htmlFor='startupBrief' className='font-bold'>Brief about the Startup</label>
+                                <input type='text' name='startupBrief' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
+                            </div>
+                            <div>
+                                <button className='font-inconsolata flex items-center bg-black text-white py-1 px-8 hover:underline'>
+                                    Done
+                                    <MdOutlineKeyboardArrowRight size={25} />
+                                </button>
+                            </div>
+                        </form>
+                    </motion.div>
                 </>
+            }
+            {
+                stage===2 && 
+                    <>
+                        <motion.div animate={{ x: -20 }} className='bg-white text-black p-5 w-full'>
+                            <form className='flex flex-col gap-5' onSubmit={handleSelfDetails}>
+                                <div className='font-inconsolata flex flex-col'>
+                                    <label htmlFor='role' className='font-bold'>Your Role</label>
+                                    <textarea name='role' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
+                                </div>
+                                <div className='font-inconsolata flex flex-col'>
+                                    <label htmlFor='selfOneLine' className='font-bold'>One Line About Yourself</label>
+                                    <textarea name='selfOneLine' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
+                                </div>
+                                <div className='font-inconsolata flex flex-col'>
+                                    <label htmlFor='selfBrief' className='font-bold'>Brief About Yourself</label>
+                                    <textarea name='selfBrief' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
+                                </div>
+                                <div>
+                                <button className='font-inconsolata flex items-center bg-black text-white py-1 px-8 hover:underline'>
+                                    Done
+                                    <MdOutlineKeyboardArrowRight size={25} />
+                                </button>
+                            </div>
+                            </form>
+                        </motion.div>
+                    </>
             }
             {
                 stage === 3 &&
