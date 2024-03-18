@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const GrantTile = ({ grantObj }) => {
@@ -9,31 +9,18 @@ const GrantTile = ({ grantObj }) => {
   };
 
   return (
-    <div className="bg-white text-black p-3 m-1 text-center w-3/4" onClick={goToGrant}>
-      <table className="w-full table-fixed">
-        <tbody>
-          <tr>
-            <td className="pl-10 pr-10 w-1/4">
-              <div className="flex flex-col justify-center items-center">
-                <span className="text-2xl flex flex-row pb-5">
-                  <span className="font-bold">Amount :</span>
-                  {grantObj.amt}
-                </span>
-                <span className="text-2xl">
-                  <span className="font-bold">Grant By:</span>
-                  {grantObj.by}
-                </span>
-              </div>
-            </td>
-            <td className="pl-10 w-1/3">
-              <div className="flex flex-col text-center w-full">
-                <span className="font-semibold text-center">Eligibility:</span>
-                <span className="text-xl">{grantObj.eligibility}</span>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div
+      className="bg-white text-black p-4 m-2 rounded-lg shadow-md cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
+      onClick={goToGrant}
+    >
+      <div>
+        <h2 className="text-xl font-bold">Amount: {grantObj.amt}</h2>
+        <p className="text-lg">Grant By: {grantObj.by}</p>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold">Eligibility:</h3>
+        <p className="text-base">{grantObj.eligibility}</p>
+      </div>
     </div>
   );
 };

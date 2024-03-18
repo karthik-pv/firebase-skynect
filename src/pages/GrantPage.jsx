@@ -5,9 +5,7 @@ import { db } from '../firebase';
 import Header from '../components/Header';
 
 const GrantPage = () => {
-
     const location = useLocation();
-
     const [grant, setGrant] = useState({});
 
     const getDataFromDb = async () => {
@@ -21,7 +19,7 @@ const GrantPage = () => {
                 const documentData = querySnapshot.docs[0].data();
                 setGrant(documentData);
             } else {
-                alert('no doc');
+                alert('No document found');
             }
         } catch (error) {
             console.error('Error getting document:', error);
@@ -33,41 +31,34 @@ const GrantPage = () => {
     }, []);
 
     return (
-        <div className="bg-black opacity-100 text-white min-h-screen flex flex-col items-center pattern-hive-white/15 px-20">
+        <div className="bg-black text-white min-h-screen flex flex-col items-center px-8 py-12">
             <Header />
-            <table className="bg-gray-300 text-black w-1/2 text-center items-center mb-10">
-                <tbody>
-                    <tr>
-                        <td>
-                            <h1 className="text-4xl mt-5 mb-10">Grant amount : <span className="font-bold">{grant.amt}</span></h1>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h1 className="text-4xl mt-5 mb-10">Grant By : <span className="font-bold">{grant.by}</span></h1>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href={grant.link}>
-                                <button className="bg-green-500 p-5 rounded-full mr-10 text-2xl">Take me To Grant Page</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="flex flex-col">
-                            <p className="text-4xl mt-5 mb-5">Eligibility :</p>
-                            <p className="mb-5">{grant.eligibility}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="flex flex-col">
-                            <p className="text-4xl mt-5 mb-5">Description :</p>
-                            <p className="mb-5">{grant.desc}</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div className="bg-gray-200 text-black rounded-lg shadow-lg p-8 max-w-3xl w-full justify-center">
+                <h1 className="text-4xl font-bold mb-6">Grant Details</h1>
+                <div className="mb-8">
+                    <h2 className="text-2xl font-bold mb-2">Grant Amount:</h2>
+                    <p className="text-lg">{grant.amt}</p>
+                </div>
+                <div className="mb-8">
+                    <h2 className="text-2xl font-bold mb-2">Grant By:</h2>
+                    <p className="text-lg">{grant.by}</p>
+                </div>
+                <div className="mb-8">
+                    <a href={grant.link}>
+                        <button className="bg-green-500 py-3 px-6 rounded-full text-xl hover:bg-green-600 transition-colors duration-300">
+                            Take me to Grant Page
+                        </button>
+                    </a>
+                </div>
+                <div className="mb-8">
+                    <h2 className="text-2xl font-bold mb-2">Eligibility:</h2>
+                    <p className="text-lg">{grant.eligibility}</p>
+                </div>
+                <div>
+                    <h2 className="text-2xl font-bold mb-2">Description:</h2>
+                    <p className="text-lg">{grant.desc}</p>
+                </div>
+            </div>
         </div>
     );
 };

@@ -2,38 +2,34 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import pfpimg from "../assets/empty_pfp.jpg"; // Import your pfp image
 
-const StartupDetailTile = ({userObj}) => {
-
+const StartupDetailTile = ({ userObj }) => {
   const navigate = useNavigate();
 
-  const GoToProfile = () =>{
-    navigate(`/profile?uid=${userObj.id}`)
-  }
+  const GoToProfile = () => {
+    navigate(`/profile?uid=${userObj.id}`);
+  };
 
   return (
-    <div className="bg-white text-black p-3 m-1 text-center w-3/4" onClick={GoToProfile}>
-      <table className="w-full table-fixed">
-        <tbody>
-          <tr>
-            <td className="w-1/5">
-              <img src={pfpimg} width={150} alt="Profile" />
-            </td>
-            <td className="pl-10 pr-10 w-1/4">
-              <div className="flex flex-col">
-                <span className="text-3xl font-bold pb-3">{userObj.name}</span>
-                <span className="text-3xl">{userObj.startupName}</span>
-                <span className="text-2xl">{userObj.role}</span>
-              </div>
-            </td>
-            <td className="pl-10 w-40">
-              <div className="flex flex-col text-center w-full">
-                <span className="font-semibold text-center">About Me - </span>
-                <span className="text-center">{userObj.selfOneLine}</span>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div
+      className="bg-white text-black p-6 m-4 rounded-lg shadow-md cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
+      onClick={GoToProfile}
+    >
+      <div className="flex items-center justify-between">
+        <img
+          src={pfpimg}
+          className="w-20 h-20 rounded-full object-cover"
+          alt="Profile"
+        />
+        <div className="ml-4">
+          <h2 className="text-3xl font-bold">{userObj.name}</h2>
+          <p className="text-lg">{userObj.role}</p>
+          <p className="text-lg">{userObj.startupName}</p>
+        </div>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-xl font-semibold">About Me</h3>
+        <p className="text-lg">{userObj.selfOneLine}</p>
+      </div>
     </div>
   );
 };

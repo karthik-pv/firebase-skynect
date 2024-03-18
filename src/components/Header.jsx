@@ -28,7 +28,7 @@ const Header = () => {
     return (
         <div className='flex flex-col items-center justify-center pb-10 px-2 w-full'>
             <div className='pb-3'>
-                <span className='text-6xl tracking-widest font-inconsolata capitalize'>SKYNECT</span>
+                <span className='text-white text-6xl tracking-widest font-inconsolata capitalize'>SKYNECT</span>
             </div>
             <div>
                 <table>
