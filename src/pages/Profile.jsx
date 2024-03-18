@@ -23,6 +23,10 @@ const Profile = () => {
             const userData = querySnapshot.docs.find(doc => doc.data().id === uid)?.data();
             if (userData) {
                 setUser(userData);
+                const followerusers = await fetchUsers(userData.followers);
+                setFollowerUserList(followerusers);
+                const followingusers = await fetchUsers(userData.following);
+                setFollowingUserList(followingusers);
             } else {
                 alert('No document found.');
             }
@@ -62,19 +66,19 @@ const Profile = () => {
     }
 
     const onFollowersClick = async () => {
-        if (!followerUserList.length) {
-            const users = await fetchUsers(user.followers);
-            setFollowerUserList(users);
-        }
+        // if (!followerUserList.length) {
+        //     const users = await fetchUsers(user.followers);
+        //     setFollowerUserList(users);
+        // }
         setUserList(followerUserList);
         setToggleUserList(!toggleUserList);
     };
 
     const onFollowingClick = async () => {
-        if (!followingUserList.length) {
-            const users = await fetchUsers(user.following);
-            setFollowingUserList(users);
-        }
+        // if (!followingUserList.length) {
+        //     const users = await fetchUsers(user.following);
+        //     setFollowingUserList(users);
+        // }
         setUserList(followingUserList);
         setToggleUserList(!toggleUserList);
     };

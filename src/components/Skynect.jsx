@@ -8,8 +8,8 @@ const Skynect = () => {
     const location = useLocation()
 
     return (
-        <div className='flex flex-col justify-center m-20 w-1/2 gap-10'>
-            <div className='flex flex-col'>
+        <div className='flex flex-col items-center justify-center m-10 w-1/2 gap-10'>
+            <div className='flex flex-col items-center justify-center'>
                 <span className='text-6xl tracking-widest font-inconsolata capitalize'>SKYNECT</span>
                 <div>
                     <TypeAnimation

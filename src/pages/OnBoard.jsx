@@ -181,8 +181,7 @@ const [formDetails, setFormDetails] = useState({
             {
                 stage === 0 &&
                 <>
-                    <Skynect />
-                    <motion.div animate={{ x: -100 }} className='flex flex-col justify-center w-1/2'>
+                    <motion.div animate={{ x: -100 }} className='flex flex-col justify-center w-full'>
                         <div className='bg-white text-black m-10 p-5'>
                             <span className='text-2xl tracking-widest font-extrabold font-inconsolata'>On Boarding</span>
                             <form className='flex flex-col gap-5' onSubmit={handleRegister}>

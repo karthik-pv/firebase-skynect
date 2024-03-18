@@ -29,17 +29,17 @@ const GrantsList = () => {
   return (
     <div className="bg-black min-h-screen flex flex-col items-center px-4 py-8">
       <Header />
-      <div className="mt-8 w-full max-w-lg">
+      <div className="mt-8 w-full max-w-lg overflow-x-auto">
         {loading ? (
           <p className="text-white">Loading...</p>
         ) : (
-          <ul className="w-full">
+          <div className="flex flex-nowrap">
             {grants.map((grant) => (
-              <li key={grant.id} className="mb-4">
+              <div key={grant.id} className="flex-shrink-0 w-64 mr-4">
                 <GrantTile grantObj={grant} />
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>
