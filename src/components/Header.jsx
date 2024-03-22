@@ -25,6 +25,10 @@ const Header = () => {
         navigate('/grantlist')
     }
 
+    const goToVCs = () => {
+        navigate('/vclist')
+    }
+
     return (
         <div className='flex flex-col items-center justify-center pb-10 px-2 w-full'>
             <div className='pb-3'>
@@ -33,6 +37,9 @@ const Header = () => {
             <div>
                 <table>
                     <tr>
+                        <td>
+                            <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={goToVCs}>VCs</button>
+                        </td>
                         <td>
                             <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={goToGrants}>Grants</button>
                         </td>

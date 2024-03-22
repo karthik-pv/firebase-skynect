@@ -29,13 +29,13 @@ const GrantsList = () => {
   return (
     <div className="bg-black min-h-screen flex flex-col items-center px-4 py-8">
       <Header />
-      <div className="mt-8 w-full max-w-lg overflow-x-auto">
+      <div className="mt-8 w-full max-w-lg overflow-y-auto" style={{ maxHeight: '450px' }}>
         {loading ? (
           <p className="text-white">Loading...</p>
         ) : (
-          <div className="flex flex-nowrap">
+          <div className="flex flex-col overflow-hidden">
             {grants.map((grant) => (
-              <div key={grant.id} className="flex-shrink-0 w-64 mr-4">
+              <div key={grant.id} className="mb-4">
                 <GrantTile grantObj={grant} />
               </div>
             ))}
