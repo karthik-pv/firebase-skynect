@@ -23,6 +23,15 @@ const CreateVC = () => {
         vcDetails.id = newVC.id;
         await setDoc(newVC, vcDetails);
         alert("VC Added")
+        setVCDetails({
+            name: "",
+            domain: "",
+            amt: 0,
+            stage: "",
+            desc: "",
+            link: "",
+            id: ""
+        });
     };
 
     const handleChange = (e) => {

@@ -21,6 +21,17 @@ const CreateGrant = () => {
         const newGrant = doc(collection(db , "grants"))
         grantDetails.id = newGrant.id
         await setDoc(newGrant , grantDetails)
+        alert("Grant added")
+        setGrantDetails(
+            {
+                amt : 0 ,
+                by : "" ,
+                desc : "",
+                eligibility : "" ,
+                link : "" ,
+                id : ""
+            }
+        )
     };
 
     const handleChange = (e) => {
