@@ -100,7 +100,7 @@ const Profile = () => {
 
     useEffect(() => {
         getDataFromDb();
-    }, []);
+    }, [uid]);
 
     return (
         <div className="bg-black text-white min-h-screen flex flex-col items-center py-8 px-4">

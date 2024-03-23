@@ -1,9 +1,9 @@
 import React from 'react'
-import { useNavigate , useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 
 const Header = () => {
-
+ 
     const navigate = useNavigate();
 
     const goToHomePage = () => {
@@ -11,7 +11,7 @@ const Header = () => {
     }
 
     const GoToProfile = () =>{
-        history.push(`/profile?uid=${auth.currentUser.uid}`)
+        navigate(`/profile?uid=${auth.currentUser.uid}`)
     }
 
     const onSignout = () => {
