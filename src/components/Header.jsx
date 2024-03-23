@@ -1,7 +1,6 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , useHistory } from 'react-router-dom';
 import { auth } from '../firebase';
-
 
 const Header = () => {
 
@@ -12,7 +11,7 @@ const Header = () => {
     }
 
     const GoToProfile = () =>{
-        window.location.href=`/profile?uid=${auth.currentUser.uid}`
+        history.push(`/profile?uid=${auth.currentUser.uid}`)
     }
 
     const onSignout = () => {
@@ -53,8 +52,7 @@ const Header = () => {
                             <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={onSignout}>Sign Out</button>
                         </td>
                     </tr>
-                </table>
-                
+                </table>  
             </div>
         </div>
     )
