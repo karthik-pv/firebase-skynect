@@ -51,7 +51,7 @@ const VCPage = () => {
                     <p className="text-lg">{vc.stage}</p>
                 </div>
                 <div className="mb-8 items-center">
-                    <a href={vc.link}>
+                    <a href={vc.link} target='_blank'>
                         <button className="bg-green-500 py-3 px-6 rounded-full text-xl hover:bg-green-600 transition-colors duration-300">
                             Take me to VC Page
                         </button>

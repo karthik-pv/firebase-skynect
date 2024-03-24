@@ -1,10 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useAdminContext } from '../contexts/AdminContext';
+
 import { auth } from '../firebase';
 
 const Header = () => {
  
     const navigate = useNavigate();
+    const {isAdmin , setIsAdmin} = useAdminContext();
 
     const goToHomePage = () => {
         navigate('/home')
@@ -14,18 +17,19 @@ const Header = () => {
         navigate(`/profile?uid=${auth.currentUser.uid}`)
     }
 
+    const GoToUsers = () => {
+        navigate('/users')
+    }
+
+    const GoToJargon = () =>{
+        navigate('/jargon')
+    }
+
     const onSignout = () => {
+        setIsAdmin(false);
         auth.signOut().then(()=>{
             navigate('/')
         })
-    }
-
-    const goToGrants = () => { 
-        navigate('/grantlist')
-    }
-
-    const goToVCs = () => {
-        navigate('/vclist')
     }
 
     return (
@@ -37,16 +41,16 @@ const Header = () => {
                 <table>
                     <tr>
                         <td>
-                            <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={goToVCs}>VCs</button>
-                        </td>
-                        <td>
-                            <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={goToGrants}>Grants</button>
-                        </td>
-                        <td>
-                            <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={goToHomePage}>Skynectors</button>
+                            <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={goToHomePage}>Home</button>
                         </td>
                         <td>
                             <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={GoToProfile}>My Profile</button>
+                        </td>
+                        <td>
+                            <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={GoToUsers}>Profiles</button>
+                        </td>
+                        <td>
+                            <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={GoToJargon}>Jargon</button>
                         </td>
                         <td>
                             <button className="text-xl font-bold text-white bg-black py-2 px-4 rounded-md" onClick={onSignout}>Sign Out</button>

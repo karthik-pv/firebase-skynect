@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from '../firebase'
 import { collection , doc , setDoc } from 'firebase/firestore'
 import Header from "../components/Header";
+import { useAdminContext } from "../contexts/AdminContext";
+import { useNavigate } from 'react-router-dom'
 
 const CreateVC = () => {
+
+    const navigate = useNavigate();
+    const { isAdmin , setIsAdmin } = useAdminContext();
 
     const [vcDetails, setVCDetails] = useState(
         {
@@ -41,6 +46,12 @@ const CreateVC = () => {
             [name]: value
         }));
     };
+
+    useEffect(()=>{
+        if(!isAdmin){
+            navigate('/home')
+        }
+    },[])
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black">

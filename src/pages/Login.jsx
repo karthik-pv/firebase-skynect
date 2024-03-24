@@ -4,7 +4,9 @@ import { useState } from 'react'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import {auth } from '../firebase'
+import {auth , db } from '../firebase'
+import { doc , getDoc } from 'firebase/firestore'
+import { useAdminContext } from '../contexts/AdminContext';
 
 const Home = () => {
 
@@ -14,12 +16,22 @@ const Home = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
+    const { isAdmin , setIsAdmin } = useAdminContext();
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log('User logged in');
             console.log(userCredential);
+            const q = doc(db , 'skynect' , auth.currentUser.uid)
+            const querySnapshot = await getDoc(q)
+            if(querySnapshot.data().admin){
+                setIsAdmin(true)
+            }
+            else{
+                setIsAdmin(false)
+            }
             navigate('/home');
         } 
         catch (error) {

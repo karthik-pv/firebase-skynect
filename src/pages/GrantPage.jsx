@@ -44,7 +44,7 @@ const GrantPage = () => {
                     <p className="text-lg">{grant.by}</p>
                 </div>
                 <div className="mb-8">
-                    <a href={grant.link}>
+                    <a href={grant.link} target='_blank'>
                         <button className="bg-green-500 py-3 px-6 rounded-full text-xl hover:bg-green-600 transition-colors duration-300">
                             Take me to Grant Page
                         </button>

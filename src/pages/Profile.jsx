@@ -18,9 +18,9 @@ const Profile = () => {
 
     const getDataFromDb = async () => {
         try {
-            const q = collection(db, 'skynect');
-            const querySnapshot = await getDocs(q);
-            const userData = querySnapshot.docs.find(doc => doc.data().id === uid)?.data();
+            const q = doc(db, 'skynect',uid);
+            const querySnapshot = await getDoc(q);
+            const userData = querySnapshot.data()
             if (userData) {
                 setUser(userData);
                 const followerusers = await fetchUsers(userData.followers);
@@ -45,6 +45,10 @@ const Profile = () => {
             await updateDoc(myDocRef, {
                 following: arrayUnion(user.id)
             });
+            const otherDocRef = doc(db, 'skynect', user.id);
+            await updateDoc(otherDocRef, {
+                followers: arrayUnion(auth.currentUser.uid)
+            })
         } catch (error) {
             console.log(error);
         }
@@ -59,6 +63,10 @@ const Profile = () => {
             const myDocRef = doc(db, 'skynect', auth.currentUser.uid);
             await updateDoc(myDocRef, {
                 following: arrayRemove(user.id)
+            });
+            const otherDocRef = doc(db,'skynect', user.id);
+            await updateDoc(otherDocRef, {
+                followers: arrayRemove(auth.currentUser.uid)
             });
         } catch (error) {
             console.log(error);
@@ -133,6 +141,7 @@ const Profile = () => {
                 )}
                 {auth.currentUser && auth.currentUser.uid !== user.id &&
                     <>
+                        {console.log(user.followers , auth.currentUser.uid)}
                         {!user.followers?.includes(auth.currentUser.uid) &&
                             <div className="p-4">
                                 <button className="bg-green-500 py-3 px-6 rounded-full mr-4 text-xl" onClick={onFollow}>Follow</button>

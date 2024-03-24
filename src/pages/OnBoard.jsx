@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Skynect from '../components/Skynect';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { motion } from 'framer-motion';
 import { db, auth } from '../firebase';
@@ -30,12 +29,10 @@ const OnBoard = () => {
   const onDone = async () => {
     try {
         const userCred = await createUserWithEmailAndPassword(auth, formDetails.email, formDetails.password);
-        const uid = userCred.user.uid; // Get the UID from the User object inside the UserCredential
+        const uid = userCred.user.uid;
         
-        // Get reference to the user document using the UID
         const usersCollectionRef = doc(db, 'skynect', uid);
-    
-        // Set the data for the user document in Firestore
+
         await setDoc(usersCollectionRef, {
           name: formDetails.name,
           email: formDetails.email,
@@ -49,13 +46,14 @@ const OnBoard = () => {
           selfBrief: formDetails.selfBrief,
           id : uid,
           following : [],
-          followers : []
+          followers : [],
+          admin : false
         });
 
       navigate('/home');
 
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
 
@@ -137,15 +135,15 @@ const OnBoard = () => {
                 <motion.div animate={{ x: -20 }} className='bg-white text-black p-5 w-1/2'>
                     <form className='flex flex-col gap-5' onSubmit={handleStartupDetails}>
                         <div className='font-inconsolata flex flex-col'>
-                            <label htmlFor='startupName' className='font-bold'>Name of the Startup</label>
+                            <label htmlFor='startupName' className='font-bold'>Name of your Startup</label>
                             <input type='text' name='startupName' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
                         </div>
                         <div className='font-inconsolata flex flex-col'>
-                            <label htmlFor='startupOneLine' className='font-bold'>One line about the Startup</label>
+                            <label htmlFor='startupOneLine' className='font-bold'>One line about your Startup</label>
                             <input type='text' name='startupOneLine' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
                         </div>
                         <div className='font-inconsolata flex flex-col'>
-                            <label htmlFor='startupBrief' className='font-bold'>Brief about the Startup</label>
+                            <label htmlFor='startupBrief' className='font-bold'>Brief about your Startup</label>
                             <input type='text' name='startupBrief' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
                         </div>
                         <div>
@@ -162,7 +160,7 @@ const OnBoard = () => {
                     <motion.div animate={{x: -20 }} className='bg-white text-black p-5 w-1/2'>
                     <form className='flex flex-col gap-5' onSubmit={handleSelfDetails}>
                         <div className='font-inconsolata flex flex-col'>
-                            <label htmlFor='role' className='font-bold'>Your Role</label>
+                            <label htmlFor='role' className='font-bold'>Your Role in the Startup(in one or two words)</label>
                             <textarea name='role' className='text-black border border-black outline-none py-1 px-2 w-full tracking-widest' required />
                         </div>
                         <div className='font-inconsolata flex flex-col'>

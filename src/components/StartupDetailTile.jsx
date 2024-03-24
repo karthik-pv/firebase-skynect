@@ -11,7 +11,7 @@ const StartupDetailTile = ({ userObj }) => {
 
   return (
     <div
-      className="bg-white text-black p-6 m-4 rounded-lg shadow-md cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
+      className="bg-white text-black p-6 m-8 rounded-lg shadow-md cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
       onClick={GoToProfile}
     >
       <div className="flex items-center justify-between">

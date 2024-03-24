@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { db } from '../firebase'
 import { collection , doc , setDoc } from 'firebase/firestore'
 import Header from "../components/Header";
+import { useAdminContext } from "../contexts/AdminContext";
+import { useNavigate } from 'react-router-dom'
 
 const CreateGrant = () => {
+
+    const navigate = useNavigate();
+    const { isAdmin , setIsAdmin } = useAdminContext();
 
     const [grantDetails,setGrantDetails] = useState(
         {
@@ -41,6 +46,12 @@ const CreateGrant = () => {
             [name]: value
         }));
     };
+
+    useEffect(()=>{
+        if(!isAdmin){
+            navigate('/home')
+        }
+    },[])
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black">
