@@ -3,7 +3,7 @@
 
     const Jargon = () => {
         return (
-            <div className="bg-black min-h-screen text-white flex flex-col justify-center items-center">
+            <div className="bg-black min-h-screen w-full text-white flex flex-col justify-center items-center">
                 <Header />
                     <div className="px-4 py-8 max-w-screen-md bg-white text-black">
                         <h1 className="text-2xl font-bold mb-4">MVP (Minimum Viable Product):</h1>
@@ -34,7 +34,6 @@
                         <p>The total cost incurred by a startup to acquire, serve, and retain customers over a specific period.</p>
                         <h1 className="text-2xl font-bold mt-8 mb-4">MIS (Management Information System):</h1>
                         <p>A system used by startups to collect, process, and present data and information to support decision-making and management activities.</p>
-                        <h1 className="text-2xl font-bold mt-8 mb-4">Financial metrics</h1>
                         <h1 className="text-2xl font-bold mt-8 mb-4">GMV (Gross Merchandise Value):</h1>
                         <p>The total value of merchandise sold through a platform or marketplace, before deducting any discounts, returns, or allowances.</p>
                         <h1 className="text-2xl font-bold mt-8 mb-4">LTV (Lifetime Value of The Customer):</h1>

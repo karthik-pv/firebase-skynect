@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Skynect from '../components/Skynect'
 import { useState } from 'react'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
@@ -39,6 +39,10 @@ const Home = () => {
             setError(error.message);
         }
     };
+
+    useEffect(()=>{
+        alert('If using on phone , please use in horizontal mode');
+    },[])
 
     return (
         <div className='bg-black opacity-100 text-white min-h-screen flex items-center flex-col justify-center px-8'>

@@ -20,7 +20,7 @@ const StartupDetailTile = ({ userObj }) => {
           className="w-20 h-20 rounded-full object-cover"
           alt="Profile"
         />
-        <div className="ml-4">
+        <div className="ml-4 text-center">
           <h2 className="text-3xl font-bold">{userObj.name}</h2>
           <p className="text-lg">{userObj.role}</p>
           <p className="text-lg">{userObj.startupName}</p>

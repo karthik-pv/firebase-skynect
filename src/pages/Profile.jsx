@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore';
 import { db, auth } from '../firebase';
 import { useLocation } from 'react-router-dom';
 import Header from "../components/Header";
@@ -120,6 +120,8 @@ const Profile = () => {
                         <p className="text-4xl font-bold pb-2">{user.name}</p>
                         <p className="text-2xl font-bold pb-2">{user.startupName}</p>
                         <p className="text-xl">{user.role}</p>
+                        <p className="text-xl">{user.phoneCode}-{user.phone}</p>
+                        <p className="text-xl">{user.email}</p>
                     </div>
                 </div>
                 {auth.currentUser && auth.currentUser.uid === user.id && (
